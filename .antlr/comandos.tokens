@@ -1,0 +1,8 @@
+GUION=1
+IGUAL=2
+ID=3
+NUMERO=4
+CADENA=5
+WS=6
+'-'=1
+'='=2

@@ -1,0 +1,78 @@
+import antlr4 from "antlr4";
+import fs from "fs";
+
+import comandosLexer from "./comandosLexer.js";
+import comandosParser from "./comandosParser.js";
+
+const input = fs.readFileSync(
+    "input.txt",
+    "utf8"
+);
+
+const chars =
+    new antlr4.InputStream(input);
+
+const lexer =
+    new comandosLexer(chars);
+
+const tokens =
+    new antlr4.CommonTokenStream(
+        lexer
+    );
+
+tokens.fill();
+
+console.log(
+    "\nTABLA DE TOKENS\n"
+);
+
+tokens.tokens.forEach(token => {
+
+    if (token.type !== -1) {
+
+        let tokenName =
+            comandosLexer.symbolicNames[
+                token.type
+            ];
+
+        console.log(
+            `${token.text}\t\t${tokenName}`
+        );
+
+    }
+});
+
+const parser =
+    new comandosParser(
+        tokens
+    );
+
+const tree =
+    parser.comando();
+
+console.log(
+    "\nÁRBOL\n"
+);
+
+console.log(
+    tree.toStringTree(
+        parser.ruleNames
+    )
+);
+
+if (
+    parser.syntaxErrorsCount === 0
+) {
+
+    console.log(
+        "\nEntrada válida"
+    );
+
+}
+else {
+
+    console.log(
+        "\nEntrada inválida"
+    );
+
+}
